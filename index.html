@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fever Clinical Guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#f2f6f8;--sf:#fff;--ink:#14283b;--mu:#566879;--ln:#d5dee5;--ac:#c93b2b;--tl:#0e7378;--wn:#b36b00;--wnb:#fff4e0;--rdb:#fde8e5;--tlb:#e3f3f3}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1b26;--sf:#172633;--ink:#e6eef4;--mu:#9bb0c0;--ln:#2a3f50;--ac:#ff7766;--tl:#4cc4c9;--wn:#f0b24d;--wnb:#33280f;--rdb:#3a1a16;--tlb:#10302f}}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "IBM Plex Sans",system-ui,sans-serif}
+header{padding:20px 16px 8px;max-width:760px;margin:auto}
+h1{font:700 30px/1.1 Newsreader,Georgia,serif;margin:0}
+h1 span{color:var(--ac)}
+.sub{color:var(--mu);margin:6px 0 0;font-size:13px}
+nav{display:flex;gap:4px;overflow-x:auto;max-width:760px;margin:10px auto 0;padding:0 16px;border-bottom:1px solid var(--ln)}
+nav button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 12px;font-family:inherit;font-size:14px;font-weight:500;color:var(--mu);white-space:nowrap;cursor:pointer}
+nav button[aria-selected=true]{color:var(--ink);border-color:var(--ac)}
+main{max-width:760px;margin:auto;padding:16px}
+section{display:none}section.on{display:block}
+h2{font:700 21px Newsreader,Georgia,serif;margin:4px 0 10px}
+h3{font-size:15px;margin:16px 0 6px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:14px;margin-bottom:12px}
+label{display:block;font-weight:500;margin:10px 0 4px;font-size:14px}
+select,input[type=number]{width:100%;padding:9px;border:1px solid var(--ln);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+.chk{display:flex;gap:8px;align-items:flex-start;padding:5px 0;font-weight:400;margin:0}
+.chk input{margin-top:4px;accent-color:var(--tl)}
+fieldset{border:0;padding:0;margin:12px 0 0}legend{font-weight:600;font-size:14px}
+button.go{margin-top:14px;width:100%;padding:12px;border:0;border-radius:6px;background:var(--ink);color:var(--bg);font-family:inherit;font-size:15px;font-weight:600;cursor:pointer}
+:focus-visible{outline:3px solid var(--tl);outline-offset:2px}
+.out{border-left:5px solid var(--tl);background:var(--tlb)}
+.out.red{border-color:var(--ac);background:var(--rdb)}.out.amb{border-color:var(--wn);background:var(--wnb)}
+.out h3:first-child{margin-top:0}
+ul{padding-left:20px;margin:6px 0}li{margin:3px 0}
+details{border-top:1px solid var(--ln);padding:8px 0}details:first-of-type{border:0}
+summary{cursor:pointer;font-weight:600}
+.clue{color:var(--mu);margin:4px 0 0}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:1px 7px;border-radius:10px;background:var(--rdb);color:var(--ac);margin-left:6px}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{border-bottom:1px solid var(--ln);padding:7px 6px;text-align:left;vertical-align:top}
+.wrap{overflow-x:auto}
+.bar{height:8px;background:var(--ln);border-radius:4px;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;background:var(--tl);width:0;transition:width .2s}
+.warn{font-size:12.5px;color:var(--mu);border-top:1px solid var(--ln);margin-top:18px;padding-top:10px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<header><h1>Fever <span>Clinical Guide</span></h1>
+<p class="sub">Assessment, tests, diagnosis and treatment. Built from Harrison’s Ch. 18–20, with 2024–2026 updates.</p></header>
+<nav role="tablist" aria-label="Clinical guide sections" id="tabs"></nav>
+<main>
+<section id="assess"><h2>Assess a febrile patient</h2>
+<div class="card">
+<label for="grp">Patient group</label>
+<select id="grp"><option value="a">Adult / older child</option><option value="c">Child under 5 years</option><option value="i">Infant under 3 months</option></select>
+<label for="t">Temperature (°C)</label><input id="t" type="number" step="0.1" value="38.5" inputmode="decimal" required>
+<label for="d">Duration of fever (days)</label><input id="d" type="number" min="0" step="1" value="2" inputmode="numeric" required>
+<label for="rash">Rash</label>
+<select id="rash"><option value="">None</option><option value="nb">Non-blanching / purpuric</option><option value="o">Other rash (see Rash tab)</option></select>
+<fieldset><legend>Red flags</legend>
+<label class="chk"><input type="checkbox" class="rf" value="Hypotension, shock or poor perfusion"> Hypotension, shock or capillary refill ≥3 s</label>
+<label class="chk"><input type="checkbox" class="rf" value="Neck stiffness or altered mental state"> Neck stiffness, altered mental state, seizure</label>
+<label class="chk"><input type="checkbox" class="rf" value="Respiratory distress"> Respiratory distress or SpO₂ low</label>
+<label class="chk"><input type="checkbox" class="rf" value="Bile-stained vomiting or abdominal rigidity"> Bilious vomiting, rigid abdomen</label>
+<label class="chk"><input type="checkbox" class="rf" value="Mottled, ashen or blue skin"> Mottled / ashen skin, weak cry</label>
+</fieldset>
+<fieldset><legend>Context</legend>
+<label class="chk"><input type="checkbox" id="imm"> Immunocompromised, on anticytokine therapy, steroids or NSAIDs</label>
+<label class="chk"><input type="checkbox" id="hot"> Heat exposure, strenuous exercise, or drug that impairs sweating; skin hot and dry</label>
+<label class="chk"><input type="checkbox" id="drug"> New medication in the past weeks</label>
+<label class="chk"><input type="checkbox" id="trav"> Travel to tropics, tick or animal exposure, or outbreak contact</label>
+<label class="chk"><input type="checkbox" id="rec"> Recurrent episodes with fever-free intervals</label>
+<label class="chk"><input type="checkbox" id="crp"> CRP/ESR raised on repeated tests</label>
+</fieldset>
+<button class="go" id="run">Get assessment</button></div>
+<div id="res" aria-live="polite"></div></section>
+<section id="rashs"><h2>Fever and rash</h2>
+<p class="clue">Classify the dominant lesion and distribution first (Harrison Table 19-1), then use the history: immune status, drugs, travel, animals, ticks, vaccines.</p>
+<div class="card"><label for="rt">Rash pattern</label><select id="rt"></select></div><div id="rd"></div></section>
+<section id="fuo"><h2>Fever of unknown origin</h2>
+<div class="card"><h3 style="margin-top:0">Definition (all four)</h3><ul>
+<li>Fever ≥38.3 °C (101 °F) on at least two occasions</li><li>Illness lasting ≥3 weeks</li><li>No known immunocompromise</li>
+<li>Still unexplained after thorough history, examination and the obligatory tests below</li></ul>
+<p class="clue">Inflammation of unknown origin (IUO): same, but raised CRP/ESR on several occasions for ≥3 weeks without documented fever. Same workup.</p></div>
+<div class="card"><h3 style="margin-top:0">Step 1. Obligatory investigations</h3><div class="bar"><i id="pb"></i></div><div id="ob"></div>
+<p class="clue">First stop antibiotics and glucocorticoids if safe, and stop or replace drugs to exclude drug fever (fever persisting &gt;72 h after stopping the drug makes it unlikely). Exclude thermometer manipulation.</p></div>
+<div class="card"><h3 style="margin-top:0">Step 2. Look for potentially diagnostic clues (PDCs)</h3><ul>
+<li><b>PDCs present:</b> guided tests aimed at the suspected disease only. Screening tests have very low yield without PDCs.</li>
+<li><b>PDCs absent or misleading:</b> cryoglobulins and fundoscopy, then FDG-PET/CT (or labelled leukocyte scintigraphy or gallium scan if unavailable), especially when CRP/ESR is raised.</li>
+<li>Repeat history and examination regularly; the diagnostic clue often appears late.</li></ul></div>
+<div class="card"><h3 style="margin-top:0">Step 3. After imaging</h3><ul>
+<li>Abnormal scan: confirm with biopsy or culture.</li><li>Normal scan: repeat history and exam, PDC-driven invasive tests.</li>
+<li>Still nothing: chest and abdominal CT; temporal artery biopsy if ≥55 years.</li>
+<li>Stable: follow up for new PDCs, consider NSAID. Deteriorating: further tests or a therapeutic trial.</li>
+<li>Consider a second opinion at an FUO expert centre.</li></ul></div>
+<div class="card out"><h3>Updated evidence</h3><p>The 2024 EANM consensus on FDG-PET/CT in FUO/IUO reports a diagnostic yield or helpfulness of 50–60%, and places it early in the pathway. It outperforms conventional CT for reaching a final diagnosis. Glucocorticoids rapidly abolish pathological FDG uptake, so avoid them before the scan. A low-carbohydrate diet beforehand reduces physiological myocardial uptake when endocarditis is a concern.</p></div>
+<div class="card"><h3 style="margin-top:0">Common causes (pooled studies)</h3><div class="wrap"><table><tr><th>Region</th><th>Infection</th><th>Non-infectious inflammatory</th><th>Malignancy</th><th>No diagnosis</th></tr>
+<tr><td>Western Europe</td><td>17%</td><td>25%</td><td>10%</td><td>37%</td></tr><tr><td>Middle East</td><td>66%</td><td>15%</td><td>7%</td><td>8%</td></tr><tr><td>Asia</td><td>42%</td><td>20%</td><td>13%</td><td>18%</td></tr></table></div>
+<p class="clue">Medians. Tuberculosis is the leading infection in many non-Western cohorts. In the elderly, giant cell arteritis and polymyalgia rheumatica are most frequent. Lymphoma is the commonest neoplasm.</p></div>
+<div class="card"><h3 style="margin-top:0">Treatment of FUO</h3><ul>
+<li>Avoid empirical antibiotics, glucocorticoids or antituberculous drugs unless the patient is deteriorating, neutropenic or haemodynamically unstable.</li>
+<li>Positive TST/IGRA, granulomatous disease, anergy or sarcoidosis unlikely: a trial of antituberculous therapy; reconsider if no response by 6 weeks.</li>
+<li>Colchicine for suspected familial Mediterranean fever. NSAIDs for adult-onset Still’s disease.</li>
+<li>Glucocorticoids for giant cell arteritis and polymyalgia rheumatica once lymphoma and infection are reasonably excluded.</li>
+<li>Anakinra trial for suspected IL-1-mediated disease after later-stage tests.</li>
+<li>Prognosis of unexplained FUO is favourable; mortality is driven by the underlying disease.</li></ul></div></section>
+<section id="tx"><h2>Treatment of fever</h2>
+<div class="card"><h3 style="margin-top:0">Decide whether to treat</h3>
+<p>Fever is a regulated response, not an illness. Antipyretics do not delay recovery from viral or bacterial infection, and are not contraindicated. In suspected bacterial infection, withholding them can help judge response to an antibiotic.</p>
+<p><b>Treat actively when:</b> pre-existing cardiac, pulmonary or CNS impairment (oxygen consumption rises about 13% per °C above 37), a history of febrile or non-febrile seizure in a child (Harrison), or marked symptoms such as headache, myalgia and arthralgia.</p></div>
+<div class="card"><h3 style="margin-top:0">Agents</h3><ul>
+<li><b>Paracetamol (acetaminophen):</b> preferred first line. Equal to aspirin in fever reduction without platelet or gastric effects.</li>
+<li><b>NSAIDs (ibuprofen):</b> effective; caution with platelets, GI tract, kidneys.</li>
+<li><b>Aspirin:</b> avoid in children (Reye’s syndrome).</li>
+<li><b>Parenteral or rectal forms</b> if the patient cannot take oral drugs.</li>
+<li><b>Glucocorticoids:</b> antipyretic but mask disease; use only for specific diagnoses.</li></ul>
+<p class="clue">Dose by the product label and the patient’s weight, renal and hepatic function. Check local formulary.</p></div>
+<div class="card" id="indian-brands"><h3 style="margin-top:0">Indian medicine brand reference</h3>
+<p>Verified product listings checked 2 November 2026. One sourced example per medicine (maximum five); brands are examples, not endorsements. Prices are indicative listed MRP for the stated pack, may vary by batch/location, and are not a treatment cost estimate. Where only the marketer is verified, it is labelled explicitly; check the pack for the manufacturing site.</p>
+<div class="wrap"><table><caption>Medicines mentioned in Treatment and FUO</caption><thead><tr><th scope="col">Medicine</th><th scope="col">Indian-market brand / strength</th><th scope="col">Company</th><th scope="col">Indicative MRP</th><th scope="col">Source</th></tr></thead><tbody><tr><th scope="row">Paracetamol</th><td>Dolo 650<br>650 mg tablet</td><td>Micro Labs Ltd (marketer)</td><td>₹32.28 / 15 tablets</td><td><a href="https://www.1mg.com/drugs/dolo-650-tablet-74467" target="_blank" rel="noopener noreferrer">Product listing</a></td></tr><tr><th scope="row">Ibuprofen (NSAID)</th><td>Brufen 400<br>400 mg tablet</td><td>Abbott (marketer)</td><td>₹25.75 / 20 tablets</td><td><a href="https://www.1mg.com/drugs/brufen-400-tablet-1002088" target="_blank" rel="noopener noreferrer">Product listing</a></td></tr><tr><th scope="row">Aspirin</th><td>Disprin Regular<br>325 mg effervescent tablet</td><td>Reckitt Benckiser (India) Pvt Ltd</td><td>₹7.07 / 10 tablets</td><td><a href="https://pharmeasy.in/medicines/disprin-regular-325mg-tablet-10-s-213369/" target="_blank" rel="noopener noreferrer">Product listing</a></td></tr><tr><th scope="row">Glucocorticoid: prednisolone</th><td>Wysolone 5 DT<br>5 mg dispersible tablet</td><td>Pfizer Ltd (marketer)</td><td>₹10.82 / 15 tablets</td><td><a href="https://www.1mg.com/drugs/wysolone-5mg-tablet-70901" target="_blank" rel="noopener noreferrer">Product listing</a></td></tr><tr><th scope="row">Colchicine (FUO: suspected FMF)</th><td>Zycolchin<br>0.5 mg tablet</td><td>Zydus Cadila (marketer)</td><td>₹35.04 / 10 tablets</td><td><a href="https://www.1mg.com/drugs/0.5-mg-58130" target="_blank" rel="noopener noreferrer">Product listing</a></td></tr></tbody></table></div>
+<p class="clue">Listed strengths identify products; they are not recommended doses. Oral adult tablets do not define a paediatric dose or substitute for rectal/injectable formulations. Prescribing must follow diagnosis, age/weight, organ function and the current product label.</p>
+<ul><li>Paracetamol: check all combination products to avoid duplicate dosing.</li><li>Ibuprofen / aspirin: avoid in suspected dengue or bleeding, dehydration or significant renal disease; check other NSAIDs and anticoagulants. Aspirin is not a routine childhood antipyretic.</li><li>Prednisolone and colchicine: prescription medicines for specific diagnoses, not routine treatment of undifferentiated fever. Colchicine has important renal/hepatic and drug-interaction constraints.</li></ul>
+<details><summary>Specialist IL-1 medicines: Indian brand verification</summary><p>Anakinra and canakinumab are mentioned in this guide. No routine Indian-market brand was verified in this review; no local price or Indian brand is asserted. Overseas products Kineret and Ilaris appear in specialist sourcing listings; these are not counted as Indian brands. Confirm local regulatory access, supply and cold chain with the specialist hospital pharmacy.</p><p><a href="https://www.gnhindia.com/products/kineret-pfs-2" target="_blank" rel="noopener noreferrer">Anakinra sourcing reference</a> · <a href="https://www.gnhindia.com/products/ilaris-canakinumab-150mg-injection-7" target="_blank" rel="noopener noreferrer">Canakinumab sourcing reference</a></p></details></div>
+<div class="card out amb"><h3>Children under 5 (NICE NG143, last updated 2021)</h3><ul>
+<li>Do not use antipyretics only to lower the temperature in an otherwise well child; they do not prevent febrile seizures.</li>
+<li>Give paracetamol or ibuprofen if the child appears distressed.</li>
+<li>If distress persists, switch to the other agent. Do not give both together; alternate only if distress recurs before the next dose.</li>
+<li>Safety-net parents: seek help if the child looks worse, has a fit, develops a non-blanching rash, or fever lasts 5 days.</li></ul></div>
+<div class="card out red"><h3>Hyperthermia and hyperpyrexia</h3><ul>
+<li>Hyperthermia (heat stroke): set point unchanged, hot dry skin, <b>does not respond to antipyretics</b>. Cool physically; see Harrison Ch. 465.</li>
+<li>Hyperpyrexia &gt;41.5 °C: often CNS haemorrhage or severe infection.</li>
+<li>Cooling blankets only together with oral antipyretics in fever. In CNS bleeding or trauma, lowering core temperature protects the brain.</li></ul></div>
+<div class="card"><h3 style="margin-top:0">Special settings</h3><ul>
+<li><b>Anticytokine therapy</b> (anti-TNF, IL-6, IL-17): fever is blunted. Low-grade fever warrants early, rigorous workup for TB, fungal and opportunistic infection.</li>
+<li><b>Newborns, elderly, chronic liver or renal failure, steroid users:</b> may have infection without fever.</li>
+<li><b>Autoinflammatory disease:</b> IL-1 blockade (anakinra, canakinumab) reduces fever.</li></ul></div></section>
+<section id="src"><h2>Sources and cautions</h2>
+<div class="card"><ul>
+<li>Harrison’s Principles of Internal Medicine: Ch. 18 Fever, Ch. 19 Fever and Rash, Ch. 20 Fever of Unknown Origin (pages supplied).</li>
+<li>Hess S et al. EANM consensus on [18F]FDG PET/CT in fever and inflammation of unknown origin. Eur J Nucl Med Mol Imaging, 2024.</li>
+<li>NICE NG143: Fever in under 5s (published 2013, last updated 26 Nov 2021).</li></ul>
+<p class="clue">Source list supplied by the author, dated 19 Oct 2026. Newer local or national guidance may apply.</p></div>
+<p class="warn">Decision-support and education tool for clinicians. It does not replace clinical judgement, local protocols or specialist advice. Outputs are not validated for individual patient care.</p></section>
+</main>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const T=[["assess","Assess"],["rashs","Rash"],["fuo","FUO"],["tx","Treatment"],["src","Sources"]];
+const nav=$("#tabs");
+T.forEach(([id,l])=>{const b=document.createElement("button");b.id="tab-"+id;b.textContent=l;b.setAttribute("role","tab");b.setAttribute("aria-controls",id);b.dataset.t=id;b.onclick=()=>show(id);nav.append(b);const panel=document.getElementById(id);panel.setAttribute("role","tabpanel");panel.setAttribute("aria-labelledby",b.id)});
+nav.addEventListener("keydown",e=>{const buttons=$$("#tabs button"),i=buttons.indexOf(document.activeElement);if(i<0)return;let next;if(e.key==="ArrowRight")next=(i+1)%buttons.length;else if(e.key==="ArrowLeft")next=(i-1+buttons.length)%buttons.length;else if(e.key==="Home")next=0;else if(e.key==="End")next=buttons.length-1;else return;e.preventDefault();buttons[next].click();buttons[next].focus()});
+function show(id){$$("section").forEach(s=>s.classList.toggle("on",s.id===id));$$("#tabs button").forEach(b=>{b.setAttribute("aria-selected",b.dataset.t===id);b.tabIndex=b.dataset.t===id?0:-1});scrollTo(0,0)}
+show("assess");
+const R={
+"Centrally distributed maculopapular":[["Measles","Koplik spots, cough, coryza; rash from hairline downward, sparing palms and soles; non-immune"],["Rubella","Postauricular and suboccipital nodes, arthritis; avoid exposing pregnant women"],["Erythema infectiosum","“Slapped cheeks” then lacy reticular rash; arthritis in adults"],["Roseola (HHV-6/7)","Children <3 y; rash after fever resolves"],["Infectious mononucleosis","Rash in 30–90% if ampicillin given; nodes, pharyngitis"],["Drug eruption / DRESS","New drug 2–3 weeks earlier; eosinophilia, facial oedema, organ involvement"],["Epidemic and murine typhus, scrub typhus","Lice or flea exposure; scrub typhus has an eschar"],["Typhoid, dengue, Zika, chikungunya","Travel history; rose spots (typhoid), flushing then rash and breakbone pain (dengue)"],["Primary HIV, SLE, Still’s disease","Pharyngitis, arthralgia; malar rash; evanescent salmon rash with fever spikes"]],
+"Peripheral (palms and soles, acral)":[["Rocky Mountain spotted fever","Wrists and ankles first, spreads centripetally; early diagnosis and therapy are critical (Ch. 187)"],["Secondary syphilis","Coppery scaly papules on palms and soles"],["Hand-foot-and-mouth disease","Vesicles on hands, feet, mouth; coxsackievirus A16, EV71"],["Erythema multiforme","Target lesions on elbows, knees, palms; HSV, Mycoplasma, drugs"],["Infective endocarditis","Osler’s nodes, Janeway lesions, splinter haemorrhages; new murmur"],["COVID-19","Pernio-like acral lesions; retiform purpura in severe disease"]],
+"Confluent desquamative erythema":[["Scarlet fever","Sandpaper rash, strawberry tongue, Pastia’s lines after pharyngitis"],["Kawasaki disease","Child <8 y, fever ≥5 days, red eyes, lips, hands/feet oedema, coronary risk"],["Staphylococcal TSS / streptococcal TSS","Hypotension and multiorgan failure; strep TSS often with necrotising fasciitis"],["Staphylococcal scalded-skin syndrome","Nikolsky sign; children and renal dysfunction"],["Toxic epidermal necrolysis, SJS","Mucosal involvement, skin sloughing; drugs in 80%"],["Exfoliative erythroderma, DRESS","Underlying skin disease or drug; eosinophilia, hepatitis"]],
+"Vesiculobullous or pustular":[["Varicella","Lesions in different stages; truncal"],["Smallpox (variola)","Lesions all at same stage, facial and peripheral"],["HSV, disseminated HSV/VZV","Grouped vesicles on erythema; immunosuppressed disseminate"],["Rickettsialpox","Eschar at mite bite, then vesicles then pustules"],["Hot-tub folliculitis","Pseudomonas; follows bathing, spares area under swimsuit"],["Disseminated Vibrio vulnificus, ecthyma gangrenosum","Haemorrhagic bullae with sepsis; cirrhosis, seafood; neutropenia"],["Acute generalised exanthematous pustulosis","New antimicrobial or anticonvulsant"],["Mycoplasma-induced rash and mucositis","Child with pneumonia and severe mucositis"]],
+"Urticaria-like":[["Urticarial vasculitis","Lesions last >24 h (up to 5 days), burning, leave bruising"],["Serum sickness","Drugs (penicillins, sulfonamides), hepatitis B; arthralgia"],["Lupus, Sjögren’s, lymphoma","Chronic urticaria with fever"]],
+"Nodular":[["Disseminated candidiasis, cryptococcosis, histoplasmosis","Immunocompromised; fever, myalgia, nodules"],["Aspergillosis, mucormycosis","Necrotic nodules"],["Erythema nodosum","Exquisitely tender shin nodules; strep, TB, sarcoid, drugs"],["Sweet syndrome","Tender plaques with neutrophilia; malignancy, drugs (G-CSF)"],["Bacillary angiomatosis","Advanced HIV; Bartonella"]],
+"Purpuric (non-blanching)":[["Acute meningococcaemia","EMERGENCY: treat as bacterial sepsis immediately; do not delay for confirmation"],["Purpura fulminans","Severe DIC; ecchymoses to black necrosis"],["Rocky Mountain spotted fever","Petechiae evolving from macules, tick exposure"],["Viral haemorrhagic fever, dengue","Travel; shock, mucosal bleeding"],["TTP / HUS","Anaemia, thrombocytopenia, renal and neurological dysfunction"],["Cutaneous small-vessel vasculitis","Palpable purpura on legs; infection, drugs, HSP"],["Endocarditis, gonococcaemia","Sparse acral pustules near joints, tenosynovitis"],["Echovirus 9","May mimic meningococcaemia"]],
+"Ulcer or eschar":[["Scrub typhus, rickettsial spotted fevers (African tick-bite fever)","Eschar at bite site with regional nodes"],["Tularaemia","Ulceroglandular form after tick or animal exposure"],["Anthrax","Painless ulcer with oedema and black eschar"],["Rickettsialpox","Eschar plus vesicles"]]};
+const rt=$("#rt");Object.keys(R).forEach(k=>rt.add(new Option(k,k)));
+const escapeHTML=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function rr(){$("#rd").innerHTML='<div class="card">'+R[rt.value].map(([n,c])=>`<details><summary>${escapeHTML(n)}</summary><p class="clue">${escapeHTML(c)}</p></details>`).join("")+"</div>"}
+rt.onchange=rr;rr();
+const OB=["ESR and/or CRP","Haemoglobin, platelets, WBC with differential","Electrolytes, creatinine","Total protein, protein electrophoresis","ALP, AST, ALT, LDH, CK","Antinuclear antibodies, rheumatoid factor","Urinalysis and urine culture","Blood cultures ×3","Chest X-ray","Abdominal ultrasonography","Tuberculin skin test or IGRA"];
+$("#ob").innerHTML=OB.map((o,i)=>`<label class="chk"><input type="checkbox" class="ob" data-i="${i}"> ${o}</label>`).join("");
+$$(".ob").forEach(c=>c.onchange=()=>{$("#pb").style.width=Math.round($$(".ob:checked").length/OB.length*100)+"%"});
+$("#run").onclick=()=>{
+for(const input of [$("#t"),$("#d")]){if(!input.reportValidity())return}
+const g=$("#grp").value,t=+$("#t").value,d=+$("#d").value,rash=$("#rash").value;
+const rf=$$(".rf:checked").map(x=>x.value),imm=$("#imm").checked,hot=$("#hot").checked,drug=$("#drug").checked,trav=$("#trav").checked,rec=$("#rec").checked,crp=$("#crp").checked;
+let lvl="",tests=[],tx=[],cls=[];
+if(rf.length||rash==="nb"||g==="i"){lvl="red"}else if(imm||d>=5||(g==="c"&&t>=39)){lvl="amb"}
+if(rash==="nb")rf.push("Non-blanching rash: treat as meningococcal disease until proven otherwise");
+if(t>=41.5)cls.push("Hyperpyrexia (>41.5 °C): think CNS haemorrhage, severe infection, or hyperthermia.");
+if(hot)cls.push("Features favour <b>hyperthermia</b> (heat stroke) over fever: hot dry skin, exogenous heat or drugs, and no response to antipyretics. Cool physically and escalate (Ch. 465).");
+if(t<=37.7&&!imm)cls.push("Temperature is not above the 37.7 °C threshold Harrison uses to define fever (99th percentile for healthy adults).");
+if(d>=21&&t>=38.3&&!imm)cls.push("Meets time and temperature criteria for <b>FUO</b>. Confirm that obligatory tests leave the diagnosis uncertain, then follow the FUO tab.");
+else if(d>=21&&crp&&!imm)cls.push("Consider <b>IUO</b> (raised CRP/ESR ≥3 weeks). Same workup as FUO.");
+if(d>=21&&imm)cls.push("Prolonged fever in an immunocompromised patient is outside the FUO definition. Needs an entirely different diagnostic and therapeutic approach; involve infectious diseases.");
+if(rec)cls.push("Recurrent fever: examine and test during a febrile episode. Consider periodic fever syndromes (FMF, TRAPS), relapsing fever (Borrelia), malaria, Hodgkin (Pel-Ebstein), cyclic neutropenia (every 21 days).");
+if(imm)cls.push("Fever may be blunted or absent (anticytokine drugs, glucocorticoids, NSAIDs, elderly, newborns). Low-grade fever deserves full workup; screen for TB and opportunistic infection.");
+if(g==="i")cls.push("Under 3 months: high risk; about 10–15% have a bacterial infection. Urgent senior paediatric assessment. Use axillary electronic thermometer under 4 weeks.");
+if(g==="c"&&d>=5)cls.push("Fever for 5 days or more in a child: amber feature in NICE; consider Kawasaki disease.");
+if(drug)cls.push("Recent new drug: consider drug fever or DRESS; stop or substitute if possible. Fever persisting >72 h after withdrawal makes drug cause unlikely.");
+if(lvl==="red"){tests.push("Immediate: full set of vitals, capillary refill, glucose, lactate, blood cultures before antibiotics where it does not delay them");tests.push("CBC with differential, CRP, electrolytes, creatinine, LFTs, coagulation");tests.push("Urinalysis and culture; chest X-ray if respiratory signs");tests.push("Lumbar puncture if meningitis suspected and no contraindication")}
+else{tests.push("CBC with manual differential (look for bands, toxic granulation, Döhle bodies, atypical lymphocytes)");tests.push("CRP and ESR (cytokine levels are not helpful clinically)");tests.push("Targeted by source: urinalysis, chest X-ray, cultures, throat swab as indicated")}
+if(trav)tests.push("Malaria film/RDT, dengue NS1/serology, typhoid cultures, rickettsial serology/PCR per region");
+if(rash==="o")tests.push("Characterise lesion type and distribution; see Rash tab. Skin biopsy for persistent or unclear lesions.");
+if(d>=21)tests.push("Obligatory FUO list (FUO tab), then PDC-guided tests, then FDG-PET/CT if PDCs absent");
+if(lvl==="red")tx.push("Treat as sepsis/meningitis if suspected: urgent empirical antimicrobials per local protocol, fluids, oxygen, escalate to critical care");
+if(hot)tx.push("Hyperthermia: active external cooling; antipyretics will not work");
+if(!hot){tx.push(g==="a"?"Paracetamol first line for comfort or in cardiopulmonary or CNS disease; NSAID alternative. Avoid aspirin in children.":"Antipyretic only if distressed (paracetamol or ibuprofen, not together); not to prevent seizures; follow product label for weight-based dose.")}
+if(g==="a"&&!imm&&d<21&&!lvl)tx.push("Consider withholding antipyretics when judging response to antibiotics; avoid empirical antibiotics or steroids that may mask a diagnosis in prolonged fever");
+if(g!=="a"&&!lvl)tx.push("Safety-net: return if worse, fit, non-blanching rash, or fever ≥5 days");
+const head=lvl==="red"?"High risk: urgent assessment":lvl==="amb"?"Intermediate risk: assess promptly":"Lower risk: standard evaluation";
+const li=a=>"<ul>"+a.map(x=>"<li>"+x+"</li>").join("")+"</ul>";
+$("#res").innerHTML=`<div class="card out ${lvl}"><h3>${head}</h3>${rf.length?li(rf):"<p>No red flags entered.</p>"}</div>
+${cls.length?`<div class="card"><h3 style="margin-top:0">Classification</h3>${li(cls)}</div>`:""}
+<div class="card"><h3 style="margin-top:0">Suggested tests</h3>${li(tests)}</div>
+<div class="card"><h3 style="margin-top:0">Management</h3>${li(tx)}</div>
+<p class="warn">Decision support only. Apply clinical judgement and local protocols.</p>`;
+$("#res").scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})};
+</script></body></html>
